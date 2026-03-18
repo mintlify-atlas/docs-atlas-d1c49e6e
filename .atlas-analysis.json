@@ -1,0 +1,52 @@
+{
+  "projectType": "frontend",
+  "projectName": "Patrick Foster's Personal Website",
+  "projectDescription": "A React-based personal portfolio website for Patrick Foster showcasing his work experience, software projects, blog, and contact information.",
+  "theme": "willow",
+  "primaryColor": "#4567DB",
+  "lightColor": "#ffdd1c",
+  "darkColor": "#40BB94",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Overview",
+        "pages": ["introduction", "getting-started"]
+      },
+      {
+        "group": "Site Structure",
+        "pages": ["pages/home", "pages/projects", "pages/experience", "pages/blog", "pages/magic-the-gathering"]
+      },
+      {
+        "group": "Components",
+        "pages": ["components/card", "components/work", "components/view-blog"]
+      },
+      {
+        "group": "Data & Content",
+        "pages": ["content/projects-data", "content/work-data", "content/articles"]
+      },
+      {
+        "group": "Development",
+        "pages": ["development/setup", "development/deployment"]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Animated hero section with glitch-style heading text",
+    "Filterable work experience timeline with expand/collapse",
+    "Project showcase with image/video cards and external links",
+    "Blog section with individual article routing",
+    "Magic: The Gathering dedicated page",
+    "One-click email copy to clipboard",
+    "LinkedIn integration",
+    "Deployed via Netlify with client-side routing redirects"
+  ],
+  "publicApiSurface": [
+    "/ — Home page with hero, experience, and projects",
+    "/blog — Blog listing page",
+    "/blog/:id — Individual blog article view",
+    "/magic-the-gathering — Magic: The Gathering page",
+    "myProjects (constants/projects.js) — Array of project data objects",
+    "workExperience (constants/work.js) — Array of work experience entries",
+    "articles / getArticle (constants/articles.js) — Blog article index and lookup"
+  ]
+}
