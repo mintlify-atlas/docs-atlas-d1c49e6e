@@ -35,13 +35,13 @@ User request → Netlify CDN → index.html → React boots → React Router rea
     The root path `/` renders the `Home` component. This is the main landing page, presenting Patrick's introduction, work history, and featured projects.
   </Card>
   <Card title="Blog" icon="newspaper">
-    `/blog` renders the `Blog` component, which lists all articles sourced from `src/constants/articles.js`.
+    `/blog` renders the `Blog` component. The listing UI is currently a stub — the component renders an empty `<main>` with no article list.
   </Card>
   <Card title="Blog post" icon="file-text">
     `/blog/:id` renders the `ViewBlog` component for an individual article, where `:id` maps to a specific entry in the articles constants.
   </Card>
   <Card title="Magic: The Gathering" icon="sparkles">
-    `/magic-the-gathering` renders the `Haus` component, a dedicated section for MTG-related content.
+    `/magic-the-gathering` renders the `Haus` component, which fires a fetch request and immediately redirects visitors to an external Google Form.
   </Card>
 </Columns>
 

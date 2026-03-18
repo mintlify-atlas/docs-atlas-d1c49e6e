@@ -1,9 +1,39 @@
 ---
 title: "Magic: The Gathering"
-description: "The dedicated Magic: The Gathering page at /magic-the-gathering."
+description: "The /magic-the-gathering route — a redirect page that sends visitors to a Google Form via a Wordsmith API call."
 ---
 
-The Magic: The Gathering page is a dedicated section of the portfolio served at the `/magic-the-gathering` route.
+The `/magic-the-gathering` route is registered in `src/App.js` and rendered by the `Haus` component in `src/components/Haus.js`.
+
+## What the page actually does
+
+Despite the route name, this page does not display Magic: The Gathering content. On mount, it fires a `fetch` request to the Wordsmith API and immediately redirects the browser to a Google Form:
+
+```jsx src/components/Haus.js
+import { useEffect } from "react";
+
+const Haus = () => {
+    useEffect(() => {
+        fetchHaus();
+    }, []);
+
+    const fetchHaus = async () => {
+        const response = await fetch(
+            "https://wordsmith-api-production.up.railway.app/magic-the-gathering"
+        );
+        window.location.href =
+            "https://docs.google.com/forms/d/e/1FAIpQLSd-bKO-rbVyyBtGjMCPPpilwpJevLJRi_J-bnYE2CnUtOFv9w/viewform";
+    };
+
+    return <h1></h1>;
+};
+
+export default Haus;
+```
+
+<Note>
+  The component renders an empty `<h1>` as a placeholder while the redirect completes. Visitors who navigate to `/magic-the-gathering` will be sent to the Google Form almost immediately.
+</Note>
 
 ## Route
 
@@ -11,42 +41,22 @@ The Magic: The Gathering page is a dedicated section of the portfolio served at 
 |-------|-----------|-------------|
 | `/magic-the-gathering` | `Haus` | `src/components/Haus.js` |
 
-## Component
+The route is registered in `src/App.js` using React Router v4:
 
-The page is rendered by the `Haus` component located at `src/components/Haus.js`. It is a standalone page component, separate from the main home page layout.
+```jsx src/App.js
+import Haus from "./components/Haus";
 
-## Routing structure
-
-The route is registered in `src/App.js` alongside the other top-level routes. A typical React Router setup for this page looks like:
-
-```jsx
-// src/App.js (illustrative)
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './Home';
-import Blog from './Blog';
-import ViewBlog from './components/ViewBlog';
-import Haus from './components/Haus';
-
-function App() {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:id" element={<ViewBlog />} />
-                <Route path="/magic-the-gathering" element={<Haus />} />
-            </Routes>
-        </BrowserRouter>
-    );
-}
+<Route exact path='/magic-the-gathering' component={Haus} />
 ```
 
-<Note>
-  The `Haus` component name is unrelated to the page's Magic: The Gathering content — it is simply the internal component name used for this route.
-</Note>
+## Behavior summary
 
-## Updating the page
+1. Visitor navigates to `/magic-the-gathering`.
+2. React Router mounts the `Haus` component.
+3. The `useEffect` hook fires `fetchHaus()` on mount.
+4. `fetchHaus` calls `fetch("https://wordsmith-api-production.up.railway.app/magic-the-gathering")`.
+5. `window.location.href` is set to the Google Form URL, immediately redirecting the browser.
 
-To modify the content of the Magic: The Gathering page, edit `src/components/Haus.js` directly. No changes to `App.js` or any constants file are required unless the route path itself needs to change.
+## Modifying this page
 
-To change the route path, update the `path` prop on the corresponding `<Route>` in `src/App.js`.
+To change where visitors are redirected, update the `window.location.href` value in `src/components/Haus.js`. To add actual content instead of a redirect, replace the `fetchHaus` logic and the `return` statement with your desired JSX.

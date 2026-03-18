@@ -87,7 +87,7 @@ To add a new page, create a component in `src/components/` and add a correspondi
 All content on the site is static — there is no backend or API. Data lives in plain JavaScript files under `src/constants/`.
 
 <Tip>
-  To update the projects displayed on the home page, edit `src/constants/projects.js`. Each entry is a plain object with fields like `title`, `description`, and `link`.
+  To update the projects displayed on the home page, edit `src/constants/projects.js`. Each entry is a plain object with fields `title` (string), `text` (string array), `image` (Cloudinary URL), `isVideo` (boolean), and `links` (array of `{text, href}` objects).
 </Tip>
 
 <Tip>

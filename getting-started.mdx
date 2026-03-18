@@ -146,7 +146,7 @@ All site content is stored as plain JavaScript exports. No CMS or API is involve
 
 | File | Content |
 |---|---|
-| `articles.js` | Array of blog post metadata (title, date, id, summary) |
+| `articles.js` | Array of blog post metadata (title, date, id) and `getArticle(id)` lookup function |
 | `articles/netflix.js` | Full body content for a specific article |
 | `projects.js` | Array of software project objects |
 | `work.js` | Array of work experience objects |
@@ -155,66 +155,82 @@ All site content is stored as plain JavaScript exports. No CMS or API is involve
 
 ### Add a new project
 
-Open `src/constants/projects.js` and append a new object to the exported array. Match the shape of the existing entries.
+Open `src/constants/projects.js` and append a new object to the exported array. Match the shape of the existing entries exactly:
 
 ```js src/constants/projects.js
-// Example: add a new entry at the end of the array
+// Example: add a new entry at the desired position in the array
 {
   title: "My New Project",
-  description: "A short description of what this project does.",
-  link: "https://github.com/paaatrrrick/my-new-project",
-  tags: ["React", "Node.js"],
+  text: ["A short description of what this project does.", "- Key feature or award"],
+  image: "https://res.cloudinary.com/dlk3ezbal/image/upload/v.../my-project.png",
+  isVideo: false,
+  links: [
+    { text: "Github", href: "https://github.com/paaatrrrick/my-new-project" },
+    { text: "Website", href: "https://my-project.com" }
+  ]
 }
 ```
 
 <Tip>
-  Check the existing entries in `projects.js` to confirm the exact field names — `title`, `description`, `link`, and `tags` are common, but the actual shape of the object is authoritative.
+  The first two entries in the array are visible by default. Place your most important projects at the top to ensure they show without requiring a click.
 </Tip>
 
 ### Add a new work experience entry
 
-Open `src/constants/work.js` and add a new object to the exported array. Entries are typically ordered by recency, most recent first.
+Open `src/constants/work.js` and add a new object to the top of the array (most recent first). Match the shape of the existing entries:
 
 ```js src/constants/work.js
 // Example: add a new entry at the top of the array
 {
-  company: "Acme Corp",
-  role: "Software Engineer",
-  dates: "Jan 2025 – Present",
-  description: "Built and maintained full-stack features for the core product.",
-  link: "https://acmecorp.com",
+  title: "Senior Software Engineer at Acme Corp:",
+  text: "Built and maintained full-stack features for the core product.",
+  image: "https://res.cloudinary.com/dlk3ezbal/image/upload/v.../acme-logo.png",
+  timeLine: "Jan 2025 - Present. San Francisco, CA"
 }
 ```
+
+<Note>
+  `text` and `image` are optional. For confidential or undisclosed roles, you can omit them and only include `title` and `timeLine`.
+</Note>
 
 ### Add a new blog article
 
 <Steps>
   <Step title="Create the article body file">
-    Add a new file in `src/constants/articles/`, following the pattern of `netflix.js`. Export the article content as a default string or object from this file.
+    Add a new file in `src/constants/articles/`, following the pattern of `netflix.js`. Export an object with `title`, `date`, and `content` (the content can be a JSX element):
 
-    ```js src/constants/articles/my-article.js
-    const content = `
-    Your article body in Markdown or HTML string format.
-    `;
+    ```jsx src/constants/articles/my-article.js
+    const myArticle = {
+      title: 'My Article Title',
+      date: 'March 2026',
+      content: (
+        <main>
+          <h1>My Article Title</h1>
+          <p>Your article body goes here.</p>
+        </main>
+      )
+    };
 
-    export default content;
+    export default myArticle;
     ```
   </Step>
 
   <Step title="Register the article in articles.js">
-    Open `src/constants/articles.js` and add a metadata entry for the new article. The `id` field must match the filename (without extension) or whatever key `ViewBlog.js` uses to look up the article.
+    Open `src/constants/articles.js`, import your new article, and add it to both `articles` and `idsAndArticles`:
 
     ```js src/constants/articles.js
-    import myArticle from './articles/my-article';
+    import netflix from './articles/netflix';
+    import myArticle from './articles/my-article'; // add this import
 
-    // Add to the articles array:
-    {
-      id: "my-article",
-      title: "My Article Title",
-      date: "2026-03-18",
-      summary: "A brief summary shown in the blog listing.",
-      content: myArticle,
-    }
+    const articles = [
+      { title: netflix.title, date: netflix.date, id: 'netflix' },
+      { title: myArticle.title, date: myArticle.date, id: 'my-article' } // add this
+    ];
+
+    const idsAndArticles = {
+      'netflix': netflix.content,
+      'my-article': myArticle.content // add this
+    };
     ```
   </Step>
 

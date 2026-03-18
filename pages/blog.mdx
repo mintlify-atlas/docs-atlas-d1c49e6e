@@ -3,7 +3,7 @@ title: "Blog"
 description: "Blog section — article routing, data structure, and how to add new articles."
 ---
 
-The blog section consists of two parts: a listing page (`src/Blog.js`) and individual article pages routed via `src/components/ViewBlog.js`.
+The blog section consists of two parts: a listing page (`src/components/Blog.js`) and individual article pages routed via `src/components/ViewBlog.js`.
 
 <Warning>
   The blog listing page is currently a stub. The `Blog` component renders an empty `<main className="blog">` with no article list UI. The listing experience is not yet implemented.
@@ -20,13 +20,23 @@ The blog section consists of two parts: a listing page (`src/Blog.js`) and indiv
 
 Articles are defined in `src/constants/articles.js`. Each article is a separate file inside `src/constants/articles/` that exports an object with three fields:
 
-```js
-// src/constants/articles/netflix.js (example)
-export default {
-    title: string,   // Article headline
-    date: string,    // Publication date
-    content: any     // Full article content (rendered by ViewBlog)
-}
+```jsx
+// src/constants/articles/netflix.js (actual pattern)
+const netflixTitle = 'From `Hello World` to Netflix in 24 months';
+const netflixDate = 'December 2023';
+
+const content =
+<main>
+    <h1>{netflixTitle}</h1>
+    <date>{netflixDate}</date>
+</main>
+
+const netflix = {
+    title: netflixTitle,
+    date: netflixDate,  // date string
+    content             // JSX element
+};
+export default netflix;
 ```
 
 Articles are registered in `src/constants/articles.js`:
@@ -64,16 +74,15 @@ When a visitor navigates to `/blog/:id`, the `ViewBlog` component calls `getArti
   <Step title="Create a new article file">
     Create a new file in `src/constants/articles/`. Name it after the article's ID slug.
 
-    ```js
-    // src/constants/articles/my-new-article.js
+    ```jsx src/constants/articles/my-new-article.js
     const myNewArticle = {
         title: 'My New Article Title',
         date: 'March 2026',
         content: (
-            // JSX or string content for the article body
-            <div>
+            <main>
+                <h1>My New Article Title</h1>
                 <p>Article body goes here.</p>
-            </div>
+            </main>
         )
     };
     export default myNewArticle;
@@ -113,7 +122,7 @@ When a visitor navigates to `/blog/:id`, the `ViewBlog` component calls `getArti
 
 ## Future work
 
-The `Blog` component (`src/Blog.js`) imports the `articles` array and Patrick's face photo, suggesting a listing UI was planned. Implementing it would involve mapping over `articles` and rendering each entry as a link to `/blog/:id`:
+The `Blog` component (`src/components/Blog.js`) imports the `articles` array and Patrick's face photo, suggesting a listing UI was planned. Implementing it would involve mapping over `articles` and rendering each entry as a link to `/blog/:id`:
 
 ```jsx
 // Suggested implementation for Blog.js listing UI

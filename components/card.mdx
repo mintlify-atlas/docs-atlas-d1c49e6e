@@ -34,16 +34,16 @@ The following example shows a real project entry from the portfolio — the Cour
 
 ### Video example
 
-For projects that have a recorded demo, set `isVideo` to `true` and point `image` at a `.mp4` file. The Hand Gesture Remote project uses this pattern:
+For projects that have a recorded demo, set `isVideo` to `true` and point `image` at a video file URL. The Hand Gesture Remote project uses this pattern with a `.mov` file hosted on Cloudinary:
 
 ```jsx
 <Card
   title="Hand Gesture Remote"
-  text={['Control your computer with hand gestures using a webcam.']}
-  image="https://res.cloudinary.com/dlk3ezbal/video/upload/v1702057000/hand-gesture-demo.mp4"
+  text={['I used OpenCV and Linear Regression to create a hand gesture remote that can be used to control a TV.']}
+  image="https://res.cloudinary.com/dlk3ezbal/video/upload/v1693158666/swipe_gs02yz.mov"
   isVideo={true}
   links={[
-    { text: 'Github', href: 'https://github.com/patrickrfoster/hand-gesture-remote' }
+    { text: 'Github', href: 'https://github.com/paaatrrrick/Hand-Gesture-Remote' }
   ]}
 />
 ```

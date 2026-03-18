@@ -44,22 +44,37 @@ Newer entries — such as a stealth startup founder role — may omit both `text
 
 ## How `Work` is rendered in `Home.js`
 
-`Home.js` maintains a `currentWorkExperience` array. It maps over that array to render one `Work` component per entry, and initially displays only the first two entries:
+`Home.js` maintains a `currentWorkExperience` state variable. It starts as the first 2 entries of the full array and maps over all items in the state to render one `Work` per entry:
 
 ```jsx
-{currentWorkExperience.slice(0, 2).map((job) => (
+// Initial state — only first 2 entries visible
+const [currentWorkExperience, setCurrentWorkExperience] = useState(
+  workExperience.slice(0, 2)
+);
+
+// Toggle to show all or collapse back to 2
+const toggleWorkExperience = () => {
+  if (currentWorkExperience.length === 2) {
+    setCurrentWorkExperience(workExperience);
+  } else {
+    setCurrentWorkExperience(workExperience.slice(0, 2));
+  }
+};
+
+// Render — maps over the full currentWorkExperience state
+{currentWorkExperience.map((work) => (
   <Work
-    key={job.title}
-    title={job.title}
-    text={job.text}
-    image={job.image}
-    timeLine={job.timeLine}
+    title={work.title}
+    text={work.text}
+    image={work.image}
+    timeLine={work.timeLine}
+    key={work.title}
   />
 ))}
 ```
 
 <Tip>
-  To show all experience entries, remove the `.slice(0, 2)` call or increase the slice limit.
+  The slice happens when state is set, not at render time. To always show all entries, initialize state with the full array: `useState(workExperience)`.
 </Tip>
 
 ## CSS classes

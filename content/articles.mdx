@@ -55,9 +55,9 @@ interface ArticleMeta {
 
 // Shape of each individual article module (e.g. netflix.js)
 interface Article {
-  title: string;   // Same title used in ArticleMeta
-  date: string;    // Same date used in ArticleMeta
-  content: string; // Article body — plain text or JSX
+  title: string;         // Same title used in ArticleMeta
+  date: string;          // Same date used in ArticleMeta
+  content: JSX.Element;  // Article body as a JSX element (see netflix.js for the pattern)
 }
 ```
 
@@ -67,9 +67,13 @@ There is currently one published article.
 
 | ID | Title | File |
 |----|-------|------|
-| `netflix` | *(set in netflix.js)* | `src/constants/articles/netflix.js` |
+| `netflix` | From \`Hello World\` to Netflix in 24 months | `src/constants/articles/netflix.js` |
 
-The netflix article covers a topic related to Netflix and exports `{ title, date, content }`. It is accessible at the route `/blog/netflix`.
+The netflix article is titled "From `Hello World` to Netflix in 24 months" and is dated December 2023. It exports `{ title, date, content }`. It is accessible at the route `/blog/netflix`.
+
+<Note>
+  The `netflix.js` source file has a bug: the `date` field is set to the title string (`netflixTitle`) instead of the date string (`netflixDate`). This means the date metadata for this article is incorrectly duplicated as the title.
+</Note>
 
 ## Adding a new article
 
