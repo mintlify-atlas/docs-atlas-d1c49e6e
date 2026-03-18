@@ -1,0 +1,135 @@
+---
+title: "Blog articles"
+description: "How blog articles are structured, stored, and accessed in the site's constants system."
+---
+
+Blog articles are stored as JavaScript modules under `src/constants/articles/` and registered in a central index file at `src/constants/articles.js`. The index exports a metadata list and a lookup function used by the blog route.
+
+## File structure
+
+<Tree>
+  <Tree.Folder name="src/constants" defaultOpen>
+    <Tree.File name="articles.js" />
+    <Tree.Folder name="articles" defaultOpen>
+      <Tree.File name="netflix.js" />
+    </Tree.Folder>
+  </Tree.Folder>
+</Tree>
+
+## How it works
+
+`src/constants/articles.js` is the single source of truth for all published articles. It:
+
+1. Imports each article module from `src/constants/articles/`.
+2. Maintains an `articles` array of metadata objects (title, date, id) used to build the blog listing.
+3. Maintains an `idsAndArticles` map from article `id` to article body content.
+4. Exports a `getArticle(id)` helper that returns the content for a given article id.
+
+```js
+import netflix from './articles/netflix';
+
+const articles = [
+  { title: netflix.title, date: netflix.date, id: 'netflix' }
+];
+
+const idsAndArticles = {
+  'netflix': netflix.content,
+};
+
+const getArticle = (id) => {
+  return idsAndArticles[id];
+};
+
+export { articles, getArticle };
+```
+
+## Type definitions
+
+```ts
+// Entry in the articles metadata array
+interface ArticleMeta {
+  title: string;  // Display title shown in the blog listing
+  date: string;   // Publication date (e.g. "January 2024")
+  id: string;     // URL-safe slug used as the route parameter
+}
+
+// Shape of each individual article module (e.g. netflix.js)
+interface Article {
+  title: string;   // Same title used in ArticleMeta
+  date: string;    // Same date used in ArticleMeta
+  content: string; // Article body — plain text or JSX
+}
+```
+
+## Current articles
+
+There is currently one published article.
+
+| ID | Title | File |
+|----|-------|------|
+| `netflix` | *(set in netflix.js)* | `src/constants/articles/netflix.js` |
+
+The netflix article covers a topic related to Netflix and exports `{ title, date, content }`. It is accessible at the route `/blog/netflix`.
+
+## Adding a new article
+
+<Steps>
+  <Step title="Create the article module">
+    Create a new file at `src/constants/articles/my-topic.js`. Export an object with `title`, `date`, and `content`.
+
+    ```js
+    const myTopic = {
+      title: 'My Article Title',
+      date: 'March 2026',
+      content: `
+        The full body text of the article goes here.
+        You can use a template literal for multi-line content,
+        or export JSX if the routing component supports it.
+      `,
+    };
+
+    export default myTopic;
+    ```
+  </Step>
+
+  <Step title="Import the module in articles.js">
+    Open `src/constants/articles.js` and add an import at the top.
+
+    ```js
+    import netflix from './articles/netflix';
+    import myTopic from './articles/my-topic'; // add this line
+    ```
+  </Step>
+
+  <Step title="Add metadata to the articles array">
+    Append a new entry to the `articles` array.
+
+    ```js
+    const articles = [
+      { title: netflix.title, date: netflix.date, id: 'netflix' },
+      { title: myTopic.title, date: myTopic.date, id: 'my-topic' }, // add this
+    ];
+    ```
+  </Step>
+
+  <Step title="Register the content in idsAndArticles">
+    Add a key-value pair to the `idsAndArticles` map.
+
+    ```js
+    const idsAndArticles = {
+      'netflix': netflix.content,
+      'my-topic': myTopic.content, // add this
+    };
+    ```
+  </Step>
+
+  <Step title="Access the article">
+    The article is now accessible via `getArticle('my-topic')` and will be served at the route `/blog/my-topic`.
+  </Step>
+</Steps>
+
+## Blog listing page
+
+<Warning>
+The blog listing page at `/blog` is currently a stub — it renders an empty `<main>` element with no content. New articles registered in `articles.js` will be accessible directly by URL (e.g. `/blog/my-topic`) but will not automatically appear in a listing until the blog index component is implemented.
+</Warning>

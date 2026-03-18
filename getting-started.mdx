@@ -1,0 +1,240 @@
+---
+title: "Getting started"
+description: "Run Patrick Foster's personal website locally and understand the project structure."
+---
+
+This guide walks you through cloning the repository, running the development server, building for production, and making common content updates.
+
+## Prerequisites
+
+Before you begin, make sure you have the following installed:
+
+| Tool | Minimum version | Check your version |
+|---|---|---|
+| Node.js | 14 | `node --version` |
+| npm | 6 | `npm --version` |
+| Git | any | `git --version` |
+
+<Info>
+  Node.js 14 is the minimum supported by Create React App 5. Node.js 18 LTS or later is recommended for the best compatibility.
+</Info>
+
+## Setup
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/paaatrrrick/personalwebsite.git
+    cd personalwebsite
+    ```
+  </Step>
+
+  <Step title="Install dependencies">
+    Install all required npm packages from `package.json`.
+
+    <CodeGroup>
+
+    ```bash npm
+    npm install
+    ```
+
+    ```bash yarn
+    yarn install
+    ```
+
+    </CodeGroup>
+
+    This installs React 18, React Router DOM, and the Create React App toolchain locally.
+  </Step>
+
+  <Step title="Start the development server">
+    <CodeGroup>
+
+    ```bash npm
+    npm start
+    ```
+
+    ```bash yarn
+    yarn start
+    ```
+
+    </CodeGroup>
+
+    React Scripts starts a dev server at [http://localhost:3000](http://localhost:3000) and opens it in your default browser automatically. The server supports hot module replacement — changes to source files reflect in the browser without a full reload.
+
+    <Tip>
+      The dev server proxies all unknown routes through React Router, so navigating to `/blog` or `/magic-the-gathering` works correctly in local development.
+    </Tip>
+  </Step>
+</Steps>
+
+## Building and testing
+
+### Production build
+
+<CodeGroup>
+
+```bash npm
+npm run build
+```
+
+```bash yarn
+yarn build
+```
+
+</CodeGroup>
+
+This compiles and minifies the app into the `build/` directory. The output is optimized for production: assets are hashed for cache-busting and JavaScript is tree-shaken.
+
+<Warning>
+  Running a standard `npm run build` locally may fail or print errors if your environment has the `CI` environment variable set to `true` (common in CI systems). In that case, React Scripts treats ESLint warnings as hard errors.
+</Warning>
+
+### Netlify build
+
+The Netlify deployment uses a dedicated script that suppresses warnings-as-errors:
+
+```bash
+npm run netlify
+```
+
+This runs `CI=false npm run build` as defined in `package.json`. Use this command if you want to produce a production build that behaves exactly as it does on Netlify.
+
+### Run tests
+
+<CodeGroup>
+
+```bash npm
+npm test
+```
+
+```bash yarn
+yarn test
+```
+
+</CodeGroup>
+
+This launches the Jest test runner in interactive watch mode. Press `a` to run all tests, or `q` to quit.
+
+<Note>
+  Create React App 5 uses Jest with jsdom. Test files should be placed alongside the components they test with a `.test.js` or `.spec.js` suffix, or inside a `__tests__/` directory.
+</Note>
+
+## Project structure walkthrough
+
+Understanding where things live makes it straightforward to add or change content.
+
+### `src/App.js`
+
+The top-level component. It defines all routes using React Router's `<Route>` components and imports the four top-level page components (`Home`, `Blog`, `Haus`, `ViewBlog`). If you add a new page, you register its route here.
+
+### `src/components/`
+
+One file per page section or route:
+
+| File | Purpose |
+|---|---|
+| `Blog.js` | Lists all blog posts from the articles constants |
+| `ViewBlog.js` | Renders a single blog post matched by `:id` route param |
+| `Work.js` | Renders the work experience timeline |
+| `Card.js` | Shared card UI component used across sections |
+| `Haus.js` | The Magic: The Gathering page |
+
+### `src/constants/`
+
+All site content is stored as plain JavaScript exports. No CMS or API is involved.
+
+| File | Content |
+|---|---|
+| `articles.js` | Array of blog post metadata (title, date, id, summary) |
+| `articles/netflix.js` | Full body content for a specific article |
+| `projects.js` | Array of software project objects |
+| `work.js` | Array of work experience objects |
+
+## Adding content
+
+### Add a new project
+
+Open `src/constants/projects.js` and append a new object to the exported array. Match the shape of the existing entries.
+
+```js src/constants/projects.js
+// Example: add a new entry at the end of the array
+{
+  title: "My New Project",
+  description: "A short description of what this project does.",
+  link: "https://github.com/paaatrrrick/my-new-project",
+  tags: ["React", "Node.js"],
+}
+```
+
+<Tip>
+  Check the existing entries in `projects.js` to confirm the exact field names — `title`, `description`, `link`, and `tags` are common, but the actual shape of the object is authoritative.
+</Tip>
+
+### Add a new work experience entry
+
+Open `src/constants/work.js` and add a new object to the exported array. Entries are typically ordered by recency, most recent first.
+
+```js src/constants/work.js
+// Example: add a new entry at the top of the array
+{
+  company: "Acme Corp",
+  role: "Software Engineer",
+  dates: "Jan 2025 – Present",
+  description: "Built and maintained full-stack features for the core product.",
+  link: "https://acmecorp.com",
+}
+```
+
+### Add a new blog article
+
+<Steps>
+  <Step title="Create the article body file">
+    Add a new file in `src/constants/articles/`, following the pattern of `netflix.js`. Export the article content as a default string or object from this file.
+
+    ```js src/constants/articles/my-article.js
+    const content = `
+    Your article body in Markdown or HTML string format.
+    `;
+
+    export default content;
+    ```
+  </Step>
+
+  <Step title="Register the article in articles.js">
+    Open `src/constants/articles.js` and add a metadata entry for the new article. The `id` field must match the filename (without extension) or whatever key `ViewBlog.js` uses to look up the article.
+
+    ```js src/constants/articles.js
+    import myArticle from './articles/my-article';
+
+    // Add to the articles array:
+    {
+      id: "my-article",
+      title: "My Article Title",
+      date: "2026-03-18",
+      summary: "A brief summary shown in the blog listing.",
+      content: myArticle,
+    }
+    ```
+  </Step>
+
+  <Step title="Verify the route resolves">
+    Start the dev server with `npm start` and navigate to `/blog/my-article` to confirm the article renders correctly via the `ViewBlog` component.
+  </Step>
+</Steps>
+
+## Deployment
+
+The site deploys to Netlify. Push changes to the connected branch (typically `main`) and Netlify will automatically trigger a build using `CI=false npm run build`. No manual deploy step is required.
+
+The `public/_redirects` file ensures the SPA works correctly on Netlify:
+
+```
+/* /index.html 200
+```
+
+This rule tells Netlify to serve `index.html` for every request path, which hands control to React Router running in the browser.
+
+<Warning>
+  Do not remove the `_redirects` file. Without it, directly accessing any route other than `/` on the live site will return a 404 from Netlify's CDN instead of loading the React app.
+</Warning>

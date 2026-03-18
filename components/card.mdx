@@ -1,0 +1,82 @@
+---
+title: "Card component"
+description: "Project card component for displaying portfolio items with image/video, description, and links."
+---
+
+The `Card` component renders a single portfolio project entry. It displays a media asset (image or video), a bold project title, a multi-line description, and one or more external links.
+
+## Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `title` | `string` | Yes | Project title displayed in bold before the description. |
+| `text` | `string[]` | Yes | Array of text paragraphs. Each entry is rendered on its own line using `<br />`. |
+| `image` | `string` | Yes | URL of the project image or video file. |
+| `isVideo` | `boolean` | Yes | When `true`, renders a `<video>` element with `autoPlay` and `controls`. When `false`, renders an `<img>` element. |
+| `links` | `Array<{ text: string, href: string }>` | Yes | External links rendered as anchor tags. Each object requires a `text` label and an `href` URL. |
+
+## Usage
+
+The following example shows a real project entry from the portfolio — the Courser project that won HackUIowa 2023:
+
+```jsx
+<Card
+  title="Courser"
+  text={['ChatGPT for University classrooms', '- Won HackUIowa 2023']}
+  image="https://res.cloudinary.com/dlk3ezbal/image/upload/v1702057000/Untitled_design_y9npsz.png"
+  isVideo={false}
+  links={[
+    { text: 'Github', href: 'https://github.com/GautamSharda/courser' },
+    { text: 'Website', href: 'https://chatcourser.com/' }
+  ]}
+/>
+```
+
+### Video example
+
+For projects that have a recorded demo, set `isVideo` to `true` and point `image` at a `.mp4` file. The Hand Gesture Remote project uses this pattern:
+
+```jsx
+<Card
+  title="Hand Gesture Remote"
+  text={['Control your computer with hand gestures using a webcam.']}
+  image="https://res.cloudinary.com/dlk3ezbal/video/upload/v1702057000/hand-gesture-demo.mp4"
+  isVideo={true}
+  links={[
+    { text: 'Github', href: 'https://github.com/patrickrfoster/hand-gesture-remote' }
+  ]}
+/>
+```
+
+## Link styling
+
+Links are rendered in order. The **last** link in the array receives the CSS class `link`. All preceding links receive `link mR`, which adds a right margin to separate them visually.
+
+<Columns cols={2}>
+  <Card title="Single link" icon="link">
+    One link → class `link`
+  </Card>
+  <Card title="Multiple links" icon="link">
+    First link → class `link mR`  
+    Last link → class `link`
+  </Card>
+</Columns>
+
+<Note>
+  All links open in a new tab (`target="_blank"`) with `rel="noreferrer"` for security.
+</Note>
+
+## CSS classes
+
+The component uses the following CSS class names, which are defined in the site's stylesheet:
+
+| Class | Element | Purpose |
+|-------|---------|----------|
+| `codingChunk` | Outer wrapper `div` | Provides card layout and spacing. |
+| `codingChunk-content` | Inner content `div` | Stacks media, text, and links vertically. |
+| `codingImage` | `img` or `video` | Constrains media dimensions. |
+| `codingParagraph` | `p` | Styles the description block. |
+| `bold` | `span` wrapping `title` | Makes the project title bold. |
+| `card-link` | `div` wrapping links | Lays out anchor tags horizontally. |
+| `link` | Last `a` tag | Base link style. |
+| `link mR` | All but last `a` tags | Base link style with right margin. |

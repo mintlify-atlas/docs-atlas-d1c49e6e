@@ -1,0 +1,145 @@
+---
+title: "Projects data"
+description: "Data structure and content for all portfolio projects defined in src/constants/projects.js."
+---
+
+All portfolio projects are defined in a single file: `src/constants/projects.js`. The default export is `myProjects`, an array of project objects consumed by the projects section of the site.
+
+## Type definition
+
+```ts
+interface Project {
+  title: string;        // Display name shown in the UI
+  text: string[];       // Array of description lines or bullet points
+  image: string;        // Cloudinary URL for the project image or video
+  isVideo: boolean;     // true if the image URL points to a video file
+  links: Array<{
+    text: string;       // Link label (e.g. "Github", "Website")
+    href: string;       // Full URL
+  }>;
+}
+```
+
+## Active projects
+
+There are currently 5 active projects in the array.
+
+| # | Title | Description | Is video | Links |
+|---|-------|-------------|----------|-------|
+| 1 | Courser | ChatGPT for university classrooms | No | 2 |
+| 2 | AI Writing Assistant | GPT-powered Chrome extension to rewrite text | No | 3 |
+| 3 | World's Best Boilerplate | Fullstack web app starter template | No | 2 |
+| 4 | Hand Gesture Remote | OpenCV hand gesture TV remote | Yes | 1 |
+| 5 | Tennis Match Finder | Sports meetup startup (Actively) | No | 1 |
+
+<Note>
+The first 2 projects are shown by default. The remaining 3 are revealed when the user clicks the **Show All Projects** button.
+</Note>
+
+## Project details
+
+<AccordionGroup>
+  <Accordion title="Courser" icon="chick" defaultOpen={false}>
+    **Courser** is a ChatGPT-powered platform built for university classrooms.
+
+    **Awards:**
+    - Won HackUIowa 2023
+    - First Place in Tech at the JPECC Pitch Competition
+    - ERA Startup Accelerator Finalist
+
+    **Links:**
+    - [GitHub](https://github.com/GautamSharda/courser)
+    - [Website](https://chatcourser.com/)
+  </Accordion>
+
+  <Accordion title="AI Writing Assistant (Wordsmith)" icon="pen-nib" defaultOpen={false}>
+    **Wordsmith** is a Chrome extension that uses GPT to rewrite highlighted text on any website to be more effective. The user simply selects text on a page and the extension rewrites it in place.
+
+    **Links:**
+    - [Website](https://try-wordsmith.netlify.app/)
+    - [GitHub](https://github.com/paaatrrrick/wordsmith-client)
+    - [Chrome Extension](https://chrome.google.com/webstore/detail/wordsmith/ffjginbaonjceegjiapjgopplicfpbcm)
+  </Accordion>
+
+  <Accordion title="World's Best Boilerplate" icon="layer-group" defaultOpen={false}>
+    A batteries-included fullstack web app starter that ships with:
+    - Authentication
+    - Navbar
+    - Error handling
+    - Database integration
+
+    **Links:**
+    - [Website](https://worlds-best-boilerplate.vercel.app)
+    - [GitHub](https://github.com/paaatrrrick/boilerplate)
+  </Accordion>
+
+  <Accordion title="Hand Gesture Remote" icon="hand" defaultOpen={false}>
+    A hand gesture remote control built with **OpenCV** and **Linear Regression**. The model detects hand gestures via webcam and maps them to TV remote commands. The project media is a `.mov` video (`isVideo: true`).
+
+    **Links:**
+    - [GitHub](https://github.com/paaatrrrick/Hand-Gesture-Remote)
+  </Accordion>
+
+  <Accordion title="Tennis Match Finder (Actively)" icon="tennis-ball" defaultOpen={false}>
+    **Actively** was a sports meetup startup where Patrick served as CTO and sole developer. The platform let users post and join nearby sports matches, find friends, join groups, and browse local competition.
+
+    **Links:**
+    - [GitHub](https://github.com/paaatrrrick/Actively)
+  </Accordion>
+</AccordionGroup>
+
+## Image hosting
+
+All project images and videos are hosted on **Cloudinary**. The `image` field contains the full Cloudinary URL. When `isVideo` is `true`, the URL points to a video file (e.g. `.mov`) rather than a static image, and the UI renders it as a `<video>` element instead of an `<img>`.
+
+## Adding a new project
+
+<Steps>
+  <Step title="Open the projects file">
+    Edit `src/constants/projects.js`.
+  </Step>
+
+  <Step title="Upload your image or video to Cloudinary">
+    Get the full Cloudinary URL for the asset. Set `isVideo: true` if the asset is a video file.
+  </Step>
+
+  <Step title="Add a new object to the myProjects array">
+    Insert the object at the position you want it to appear. The array is ordered — position 0 renders first.
+
+    ```js
+    const myProjects = [
+      // ... existing projects ...
+      {
+        title: 'My New Project',
+        text: [
+          'One-line summary of what the project does.',
+          '- Key feature or award',
+          '- Another detail',
+        ],
+        image: 'https://res.cloudinary.com/dlk3ezbal/image/upload/v.../my-project.png',
+        isVideo: false,
+        links: [
+          { text: 'Github', href: 'https://github.com/paaatrrrick/my-project' },
+          { text: 'Website', href: 'https://my-project.com' },
+        ],
+      },
+    ];
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+To make a new project visible by default without clicking "Show All Projects", insert it at index 0 or 1 in the array (the first two positions are always visible).
+</Tip>
+
+## Legacy (commented-out) projects
+
+Several older projects exist in the file as commented-out entries. They are preserved for reference but not rendered.
+
+| Project | What it was |
+|---------|-------------|
+| **LangChain open-source contribution** | A contribution to the LangChain open-source library |
+| **BloggerGPT** | An autonomous SEO blog writer that reached 350 active users |
+| **Sum thing summarized** | A hackathon project that won 3rd place in 2022 |
+| **Facilitation Scheme Visualization Research** | Academic research visualizing facilitation schemes |
+| **Vidify (Lecture Video Analytics)** | A tool for extracting analytics from lecture videos |

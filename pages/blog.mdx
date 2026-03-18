@@ -1,0 +1,133 @@
+---
+title: "Blog"
+description: "Blog section — article routing, data structure, and how to add new articles."
+---
+
+The blog section consists of two parts: a listing page (`src/Blog.js`) and individual article pages routed via `src/components/ViewBlog.js`.
+
+<Warning>
+  The blog listing page is currently a stub. The `Blog` component renders an empty `<main className="blog">` with no article list UI. The listing experience is not yet implemented.
+</Warning>
+
+## Routing
+
+| Route | Component | Description |
+|-------|-----------|-------------|
+| `/blog` | `Blog` | Listing page (currently empty) |
+| `/blog/:id` | `ViewBlog` | Individual article view, looks up content by `id` |
+
+## Article data structure
+
+Articles are defined in `src/constants/articles.js`. Each article is a separate file inside `src/constants/articles/` that exports an object with three fields:
+
+```js
+// src/constants/articles/netflix.js (example)
+export default {
+    title: string,   // Article headline
+    date: string,    // Publication date
+    content: any     // Full article content (rendered by ViewBlog)
+}
+```
+
+Articles are registered in `src/constants/articles.js`:
+
+```js
+import netflix from './articles/netflix';
+
+// Metadata list used for the (not-yet-implemented) listing UI
+const articles = [
+    { title: netflix.title, date: netflix.date, id: 'netflix' }
+];
+
+// Map of id → content used by ViewBlog
+const idsAndArticles = { 'netflix': netflix.content };
+
+// Lookup function used by the ViewBlog component
+const getArticle = (id) => { return idsAndArticles[id]; };
+
+export { articles, getArticle };
+```
+
+### Current articles
+
+| ID | Title | Notes |
+|----|-------|-------|
+| `netflix` | *(title defined in netflix.js)* | The only article currently registered |
+
+## How `ViewBlog` uses `getArticle`
+
+When a visitor navigates to `/blog/:id`, the `ViewBlog` component calls `getArticle(id)` to retrieve the article content and renders it. If the `id` is not found in `idsAndArticles`, `getArticle` returns `undefined`.
+
+## Adding a new article
+
+<Steps>
+  <Step title="Create a new article file">
+    Create a new file in `src/constants/articles/`. Name it after the article's ID slug.
+
+    ```js
+    // src/constants/articles/my-new-article.js
+    const myNewArticle = {
+        title: 'My New Article Title',
+        date: 'March 2026',
+        content: (
+            // JSX or string content for the article body
+            <div>
+                <p>Article body goes here.</p>
+            </div>
+        )
+    };
+    export default myNewArticle;
+    ```
+  </Step>
+  <Step title="Import the article in articles.js">
+    Open `src/constants/articles.js` and import your new article file.
+
+    ```js
+    import netflix from './articles/netflix';
+    import myNewArticle from './articles/my-new-article';
+    ```
+  </Step>
+  <Step title="Register the article in both exports">
+    Add an entry to the `articles` metadata array and the `idsAndArticles` map.
+
+    ```js
+    const articles = [
+        { title: netflix.title, date: netflix.date, id: 'netflix' },
+        { title: myNewArticle.title, date: myNewArticle.date, id: 'my-new-article' }
+    ];
+
+    const idsAndArticles = {
+        'netflix': netflix.content,
+        'my-new-article': myNewArticle.content
+    };
+    ```
+  </Step>
+  <Step title="Visit the article route">
+    Navigate to `/blog/my-new-article` to verify the article renders correctly in the `ViewBlog` component.
+  </Step>
+</Steps>
+
+<Note>
+  Until the `Blog` listing component is implemented, articles are only accessible by direct URL (`/blog/:id`). There is no navigable index page linking to them.
+</Note>
+
+## Future work
+
+The `Blog` component (`src/Blog.js`) imports the `articles` array and Patrick's face photo, suggesting a listing UI was planned. Implementing it would involve mapping over `articles` and rendering each entry as a link to `/blog/:id`:
+
+```jsx
+// Suggested implementation for Blog.js listing UI
+import { articles } from '../constants/articles';
+import { Link } from 'react-router-dom';
+
+const Blog = () => (
+    <main className="blog">
+        {articles.map((article) => (
+            <Link to={`/blog/${article.id}`} key={article.id}>
+                <h2>{article.title}</h2>
+                <p>{article.date}</p>
+            </Link>
+        ))}
+    </main>
+);
+```

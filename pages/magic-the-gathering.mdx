@@ -1,0 +1,52 @@
+---
+title: "Magic: The Gathering"
+description: "The dedicated Magic: The Gathering page at /magic-the-gathering."
+---
+
+The Magic: The Gathering page is a dedicated section of the portfolio served at the `/magic-the-gathering` route.
+
+## Route
+
+| Route | Component | Source file |
+|-------|-----------|-------------|
+| `/magic-the-gathering` | `Haus` | `src/components/Haus.js` |
+
+## Component
+
+The page is rendered by the `Haus` component located at `src/components/Haus.js`. It is a standalone page component, separate from the main home page layout.
+
+## Routing structure
+
+The route is registered in `src/App.js` alongside the other top-level routes. A typical React Router setup for this page looks like:
+
+```jsx
+// src/App.js (illustrative)
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './Home';
+import Blog from './Blog';
+import ViewBlog from './components/ViewBlog';
+import Haus from './components/Haus';
+
+function App() {
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<ViewBlog />} />
+                <Route path="/magic-the-gathering" element={<Haus />} />
+            </Routes>
+        </BrowserRouter>
+    );
+}
+```
+
+<Note>
+  The `Haus` component name is unrelated to the page's Magic: The Gathering content — it is simply the internal component name used for this route.
+</Note>
+
+## Updating the page
+
+To modify the content of the Magic: The Gathering page, edit `src/components/Haus.js` directly. No changes to `App.js` or any constants file are required unless the route path itself needs to change.
+
+To change the route path, update the `path` prop on the corresponding `<Route>` in `src/App.js`.

@@ -1,0 +1,99 @@
+---
+title: "Local setup"
+description: "Set up the project locally, understand the code structure, and start making changes."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have the following installed:
+
+- **Node.js >= 14** — required by Create React App 5. Download from [nodejs.org](https://nodejs.org).
+- **npm** — comes bundled with Node.js.
+- **Git** — for cloning the repository.
+
+## Setup
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/paaatrrrick/personalwebsite.git
+    ```
+  </Step>
+  <Step title="Navigate into the project directory">
+    ```bash
+    cd personalwebsite
+    ```
+  </Step>
+  <Step title="Install dependencies">
+    ```bash
+    npm install
+    ```
+    This installs React, React Router, and all other dependencies listed in `package.json`.
+  </Step>
+  <Step title="Start the development server">
+    ```bash
+    npm start
+    ```
+    The app opens automatically at [http://localhost:3000](http://localhost:3000). Changes to source files trigger a hot reload in the browser.
+  </Step>
+</Steps>
+
+## Available scripts
+
+| Script | Command | Description |
+|---|---|---|
+| Start dev server | `npm start` | Opens localhost:3000 with hot reload |
+| Build for production | `npm run build` | Creates optimized build in `/build` |
+| Run tests | `npm test` | Launches the interactive test runner |
+| Eject CRA config | `npm run eject` | Exposes the underlying CRA config (irreversible) |
+| Netlify build | `npm run netlify` | Runs `CI=false npm run build`, suppressing warnings-as-errors |
+
+<Warning>
+  `npm run eject` permanently exposes the Create React App webpack and Babel configuration. This action cannot be undone. Only eject if you have a specific need to modify the underlying build tooling.
+</Warning>
+
+## Code structure
+
+The project follows a standard Create React App layout with a few conventions worth knowing:
+
+| Path | Purpose |
+|---|---|
+| `src/App.js` | Root component. Contains all `<Route>` definitions — add new routes here. |
+| `src/Home.js` | The main landing page. Imports and renders `Work` and `Card` components. |
+| `src/components/` | Individual page and UI components (`Blog`, `ViewBlog`, `Haus`, `Card`, `Work`). |
+| `src/constants/` | All site data as plain JavaScript arrays and objects. |
+| `src/images/` | Local image assets (photos of Patrick). |
+| `public/` | Static files served at the root, including the Netlify `_redirects` rule. |
+
+### Routing
+
+Routing is handled by `react-router-dom` v4 using `<Switch>` and `<Route>` in `src/App.js`:
+
+```jsx
+<Switch>
+  <Route exact path='/' component={Home} />
+  <Route exact path='/blog' component={Blog} />
+  <Route exact path='/magic-the-gathering' component={Haus} />
+  <Route exact path='/blog/:id' render={routeProps => <ViewBlog {...routeProps} />} />
+  <Route exact path='/*' component={Home} />
+  <Route exact path='*' component={Home} />
+</Switch>
+```
+
+To add a new page, create a component in `src/components/` and add a corresponding `<Route>` in `App.js`.
+
+## Modifying site content
+
+All content on the site is static — there is no backend or API. Data lives in plain JavaScript files under `src/constants/`.
+
+<Tip>
+  To update the projects displayed on the home page, edit `src/constants/projects.js`. Each entry is a plain object with fields like `title`, `description`, and `link`.
+</Tip>
+
+<Tip>
+  To update work history entries, edit `src/constants/work.js`. Each object in the array represents one position.
+</Tip>
+
+<Note>
+  To add a new blog article, create a new file in `src/constants/articles/` following the pattern of the existing `netflix.js` article, then register it in `src/constants/articles.js` so it appears in the blog listing and can be retrieved by `getArticle()`.
+</Note>

@@ -1,0 +1,92 @@
+---
+title: "Deployment"
+description: "How the site is built and deployed to Netlify, including SPA routing configuration and build settings."
+---
+
+The live site is available at [https://www.patrickrfoster.com](https://www.patrickrfoster.com).
+
+## Overview
+
+The site is a Create React App single-page application (SPA) deployed to Netlify. There is no server-side rendering, no backend, and no environment variables — all data is embedded directly in the JavaScript bundle.
+
+| Setting | Value |
+|---|---|
+| Build command | `CI=false npm run build` |
+| Publish directory | `build` |
+| Environment variables | None required |
+
+<Note>
+  The `CI=false` flag prevents Create React App from treating ESLint warnings as errors during the CI build. Without it, warnings that are acceptable in development would cause the Netlify build to fail.
+</Note>
+
+## SPA routing with `_redirects`
+
+Netlify serves static files by default. When a visitor navigates directly to a route like `/blog` or `/magic-the-gathering`, Netlify looks for a physical file at that path. Because those paths don't correspond to actual files in the `build/` output, Netlify would return a 404.
+
+The file `public/_redirects` solves this by telling Netlify to serve `index.html` for every request, letting React Router handle navigation on the client side:
+
+```
+/* /index.html 200
+```
+
+This file is copied into the `build/` directory automatically when CRA builds the project, because anything in `public/` is included in the build output as-is.
+
+<Warning>
+  If you ever delete or move `public/_redirects`, direct URL navigation and browser refreshes on any route other than `/` will return a 404 in production.
+</Warning>
+
+## Deploying to Netlify
+
+<Steps>
+  <Step title="Push code to GitHub">
+    Make sure your changes are committed and pushed to the GitHub repository.
+
+    ```bash
+    git push origin main
+    ```
+  </Step>
+  <Step title="Connect the repository in Netlify">
+    In the Netlify dashboard, click **Add new site** → **Import an existing project**, then select your GitHub account and choose the `personalwebsite` repository.
+  </Step>
+  <Step title="Configure the build settings">
+    Set the following in the Netlify build configuration:
+
+    - **Build command:** `CI=false npm run build`
+    - **Publish directory:** `build`
+  </Step>
+  <Step title="Deploy">
+    Click **Deploy site**. Netlify will install dependencies, run the build, and publish the `build/` directory. Subsequent pushes to the connected branch trigger automatic redeploys.
+  </Step>
+</Steps>
+
+## Manual deploy with Netlify CLI
+
+You can also deploy directly from your local machine using the Netlify CLI.
+
+```bash
+npm install -g netlify-cli
+netlify login
+CI=false npm run build
+netlify deploy --prod --dir=build
+```
+
+This is useful for testing a production build before pushing to the main branch, or for deployments outside of the standard Git workflow.
+
+## Production build details
+
+When you run `npm run build` (or `npm run netlify`), Create React App uses Webpack to produce a minified, tree-shaken output in the `build/` directory:
+
+- JavaScript is split into chunks automatically. Only the code needed for the initial render is loaded upfront; additional routes load their bundles on demand.
+- CSS is extracted and minified.
+- Static assets in `public/` (including `_redirects`, `favicon.ico`, `manifest.json`, and `robots.txt`) are copied directly into `build/`.
+
+## Environment considerations
+
+- **No environment variables** — there are no API keys or secrets. All site data (projects, work history, blog articles) is embedded in the source code under `src/constants/`.
+- **Images** — photos are hosted externally on Cloudinary. There are no large media files to manage as part of the build or deployment.
+
+## Custom domain
+
+<Note>
+  The custom domain `patrickrfoster.com` is configured in Netlify's **Domain management** settings for the site. DNS records point to Netlify's servers. No additional configuration in the repository is required for the domain to work.
+</Note>

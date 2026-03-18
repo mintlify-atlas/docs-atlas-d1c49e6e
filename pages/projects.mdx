@@ -1,0 +1,187 @@
+---
+title: "Projects"
+description: "All software projects showcased on the portfolio, including AI tools, full-stack apps, and computer vision projects."
+---
+
+Projects are defined in `src/constants/projects.js` and exported as the `myProjects` array. The home page renders them inside `<Card>` components, showing 2 by default with a toggle to reveal all 5.
+
+## Project data shape
+
+Each project is a plain object with the following fields:
+
+```js
+{
+    title: string,      // Display name shown in the card header
+    text: string[],     // Array of description lines rendered as a list
+    image: string,      // Cloudinary URL — either an image or a video file
+    isVideo: boolean,   // If true, the Card renders a <video> element instead of <img>
+    links: [
+        { text: string, href: string }  // One or more external links
+    ]
+}
+```
+
+## All active projects
+
+| # | Title | Description | Links |
+|---|-------|-------------|-------|
+| 1 | Courser | ChatGPT for university classrooms. Won HackUIowa 2023. | [GitHub](https://github.com/GautamSharda/courser), [Website](https://chatcourser.com/) |
+| 2 | AI Writing Assistant (Wordsmith) | Chrome extension using GPT to rewrite highlighted text. | [Website](https://try-wordsmith.netlify.app/), [GitHub](https://github.com/paaatrrrick/wordsmith-client), [Chrome Extension](https://chrome.google.com/webstore/detail/wordsmith/ffjginbaonjceegjiapjgopplicfpbcm) |
+| 3 | World's Best Boilerplate | Full-stack web app starter with auth, navbar, error handling, and DB. | [Website](https://worlds-best-boilerplate.vercel.app), [GitHub](https://github.com/paaatrrrick/boilerplate) |
+| 4 | Hand Gesture Remote | OpenCV + linear regression hand gesture controller for TV remotes. | [GitHub](https://github.com/paaatrrrick/Hand-Gesture-Remote) |
+| 5 | Tennis Match Finder (Actively) | Sports meetup startup — Patrick was CTO and sole developer. | [GitHub](https://github.com/paaatrrrick/Actively) |
+
+## Project details
+
+<AccordionGroup>
+  <Accordion title="Courser" icon="egg" defaultOpen={false}>
+    **Courser** is a ChatGPT-style AI assistant built for university classrooms. It allows students and instructors to interact with course-specific AI within an academic context.
+
+    **Achievements:**
+    - Won HackUIowa 2023
+    - First place in Tech for JPECC Pitch Competition
+    - ERA Startup Accelerator Finalist
+
+    ```js
+    {
+        title: '🐣 Courser',
+        text: [
+            'ChatGPT for University classrooms',
+            '- Won HackUIowa 2023',
+            '- First Place in Tech for JPECC Pitch Competition',
+            '- ERA Startup Accelerator Finalist'
+        ],
+        image: 'https://res.cloudinary.com/dlk3ezbal/image/upload/v1702057000/Untitled_design_y9npsz.png',
+        isVideo: false,
+        links: [
+            { text: 'Github', href: 'https://github.com/GautamSharda/courser' },
+            { text: 'Website', href: 'https://chatcourser.com/' }
+        ]
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="AI Writing Assistant (Wordsmith)" icon="pen-line">
+    **Wordsmith** is a Chrome extension that uses GPT to rewrite any text on any website. Users simply highlight text and the extension rewrites it to be more effective.
+
+    The extension is published on the Chrome Web Store and the client is hosted on Netlify.
+
+    ```js
+    {
+        title: 'AI Writing Assistant',
+        text: [
+            'Wordsmith is a chrome extension that uses GPT to rewrite text on any website to be more effective by simply highlighting it.'
+        ],
+        image: 'https://res.cloudinary.com/dlk3ezbal/image/upload/v1693158626/wordsmith_z5rsxt.png',
+        isVideo: false,
+        links: [
+            { text: 'Website', href: 'https://try-wordsmith.netlify.app/' },
+            { text: 'Github', href: 'https://github.com/paaatrrrick/wordsmith-client' },
+            { text: 'Chrome Extension', href: 'https://chrome.google.com/webstore/detail/wordsmith/ffjginbaonjceegjiapjgopplicfpbcm' }
+        ]
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="World's Best Boilerplate">
+    A production-ready full-stack web application starter that includes all the essentials so you can skip boilerplate and start building features immediately.
+
+    **Included:**
+    - Authentication
+    - Navbar
+    - Error handling
+    - Database integration
+
+    ```js
+    {
+        title: "World's Best Boilerplate",
+        text: [
+            'Boilerplate for any fullstack web app',
+            '- Authentication',
+            '- Navbar',
+            '- Error Handling',
+            '- Database'
+        ],
+        image: 'https://res.cloudinary.com/dlk3ezbal/image/upload/v1702057438/Untitled_design_1_zmuixu.png',
+        isVideo: false,
+        links: [
+            { text: 'Website', href: 'https://worlds-best-boilerplate.vercel.app' },
+            { text: 'Github', href: 'https://github.com/paaatrrrick/boilerplate' }
+        ]
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Hand Gesture Remote" icon="hand">
+    A computer vision project using **OpenCV** and **linear regression** to detect hand gestures from a webcam feed and map them to TV remote control commands.
+
+    The card for this project uses a video instead of a static image (`isVideo: true`), which the `<Card>` component handles by rendering a `<video>` element.
+
+    ```js
+    {
+        title: 'Hand Gesture Remote',
+        text: [
+            'I used OpenCV and Linear Regression to create a hand gesture remote that can be used to control a TV.'
+        ],
+        image: 'https://res.cloudinary.com/dlk3ezbal/video/upload/v1693158666/swipe_gs02yz.mov',
+        isVideo: true,
+        links: [
+            { text: 'Github', href: 'https://github.com/paaatrrrick/Hand-Gesture-Remote' }
+        ]
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Tennis Match Finder (Actively)" icon="tennis-ball">
+    **Actively** was a sports meetup startup where Patrick served as CTO and sole developer. The app allows users to post and join nearby sports matches.
+
+    ```js
+    {
+        title: 'Tennis Match Finder',
+        text: [
+            'Actively was a sports meetup startup I acted as the CTO and sole developer of. Actively allows users to post and join nearby sports matches.'
+        ],
+        image: 'https://res.cloudinary.com/dlk3ezbal/image/upload/v1693158666/actively_rzcg2j.png',
+        isVideo: false,
+        links: [
+            { text: 'Github', href: 'https://github.com/paaatrrrick/Actively' }
+        ]
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Adding a new project
+
+<Steps>
+  <Step title="Open the projects constant file">
+    Edit `src/constants/projects.js`.
+  </Step>
+  <Step title="Add a new entry to the array">
+    Append a new object to the `myProjects` array following the data shape above.
+
+    ```js
+    {
+        title: 'My New Project',
+        text: ['A short description of what this project does.'],
+        image: 'https://res.cloudinary.com/dlk3ezbal/image/upload/v.../your-image.png',
+        isVideo: false,
+        links: [
+            { text: 'Github', href: 'https://github.com/paaatrrrick/my-new-project' },
+            { text: 'Website', href: 'https://my-new-project.com' }
+        ]
+    }
+    ```
+  </Step>
+  <Step title="Upload your image to Cloudinary">
+    Images are hosted on Cloudinary under the `dlk3ezbal` cloud. Upload your asset there and use the generated URL as the `image` value. For video demos, set `isVideo: true` and use a `.mov` or `.mp4` URL.
+  </Step>
+</Steps>
+
+<Note>
+  The home page shows the first 2 projects in the array by default. Place your most important projects at the top of the `myProjects` array to ensure they are visible without the visitor needing to expand the list.
+</Note>
+
+## Legacy / commented-out projects
+
+Several older projects (including a LangChain integration, BloggerGPT, and others) exist in the codebase but are commented out of `projects.js`. These are legacy projects that are no longer actively showcased. They can be restored by uncommenting them in the array if needed.

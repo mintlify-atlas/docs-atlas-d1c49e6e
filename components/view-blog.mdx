@@ -1,0 +1,120 @@
+---
+title: "ViewBlog component"
+description: "Dynamic blog article viewer that renders individual articles based on URL route parameter."
+---
+
+The `ViewBlog` component renders a single blog article. It reads the article identifier from the URL, looks up the corresponding content, and displays it on the page.
+
+## Route
+
+`ViewBlog` is mounted at `/blog/:id` in `App.js`:
+
+```jsx
+<Route exact path='/blog/:id' render={routeProps => <ViewBlog {...routeProps} />} />
+```
+
+For example, navigating to `/blog/netflix` renders the Netflix article.
+
+## How article lookup works
+
+<Steps>
+  <Step title="User navigates to a blog URL">
+    A URL like `/blog/netflix` matches the route `/blog/:id`. React Router extracts `"netflix"` as the `id` param.
+  </Step>
+  <Step title="ViewBlog reads the route param">
+    `ViewBlog` receives `routeProps` from React Router. The article ID is available at `routeProps.match.params.id`.
+  </Step>
+  <Step title="ViewBlog calls getArticle">
+    The component calls `getArticle(id)` from `src/constants/articles.js`. This function looks up the ID in the `idsAndArticles` map and returns the article's `content`.
+  </Step>
+  <Step title="Article content is rendered">
+    The returned content is displayed on the page. If the ID does not match any article, `getArticle` returns `undefined`.
+  </Step>
+</Steps>
+
+## Article data structure
+
+Each article is a JavaScript module that exports an object with three fields:
+
+```js
+// src/constants/articles/netflix.js
+const netflix = {
+  title: 'Netflix Article Title',
+  date: 'December 2023',
+  content: '...article content...'
+};
+export default netflix;
+```
+
+The `articles.js` file aggregates all articles and exposes `getArticle`:
+
+```js
+// src/constants/articles.js
+import netflix from './articles/netflix';
+
+const articles = [
+  { title: netflix.title, date: netflix.date, id: 'netflix' }
+];
+
+const idsAndArticles = {
+  'netflix': netflix.content
+};
+
+const getArticle = (id) => { return idsAndArticles[id]; };
+
+export { articles, getArticle };
+```
+
+## Current articles
+
+| ID | File | Route |
+|----|------|-------|
+| `netflix` | `src/constants/articles/netflix.js` | `/blog/netflix` |
+
+## Adding a new article
+
+To make `ViewBlog` render a new article, follow these steps:
+
+<Steps>
+  <Step title="Create the article file">
+    Create `src/constants/articles/my-article.js` and export an object with `title`, `date`, and `content`:
+
+    ```js
+    const myArticle = {
+      title: 'My New Article',
+      date: 'March 2026',
+      content: 'Full article content goes here.'
+    };
+    export default myArticle;
+    ```
+  </Step>
+  <Step title="Import the article in articles.js">
+    Open `src/constants/articles.js` and import the new module:
+
+    ```js
+    import myArticle from './articles/my-article';
+    ```
+  </Step>
+  <Step title="Register the article">
+    Add an entry to both `articles` and `idsAndArticles`:
+
+    ```js
+    const articles = [
+      { title: netflix.title, date: netflix.date, id: 'netflix' },
+      { title: myArticle.title, date: myArticle.date, id: 'my-article' }
+    ];
+
+    const idsAndArticles = {
+      'netflix': netflix.content,
+      'my-article': myArticle.content
+    };
+    ```
+  </Step>
+  <Step title="Navigate to the article">
+    Visit `/blog/my-article` in the browser. `ViewBlog` will call `getArticle('my-article')` and render the content.
+  </Step>
+</Steps>
+
+<Note>
+  The article ID in the URL must exactly match the key used in `idsAndArticles`. A mismatch causes `getArticle` to return `undefined` and the page to render no content.
+</Note>

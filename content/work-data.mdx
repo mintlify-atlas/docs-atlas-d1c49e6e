@@ -1,0 +1,123 @@
+---
+title: "Work experience data"
+description: "Data structure and content for all work experience entries in src/constants/work.js."
+---
+
+All work experience entries are defined in `src/constants/work.js`. The default export is `workExperience`, an ordered array consumed by the work section of the site.
+
+## Type definition
+
+```ts
+interface WorkExperience {
+  title: string;     // Role and company name
+  text?: string;     // Description of the role (optional)
+  image?: string;    // Cloudinary URL for company logo (optional)
+  timeLine: string;  // Date range and location
+}
+```
+
+<Note>
+`text` and `image` are optional. Newer or confidential entries — such as the stealth startup role — may intentionally omit both fields.
+</Note>
+
+## Timeline
+
+Entries are stored most-recent first.
+
+| Role | Company | Period | Location |
+|------|---------|--------|----------|
+| Founder | Stealth startup | May – Aug 2026 | Seattle, WA |
+| Software Engineer | OpenAI | May – Aug 2025 | Seattle, WA |
+| Software Engineer Intern | GoDaddy | May – Aug 2023 | Seattle, WA |
+| Software Engineer Intern | J.P. Morgan Chase | Jun – Aug 2022 | Chicago, IL |
+| Recruiting Intern | Speechify | Jan – Apr 2022 | Remote |
+| Venture Analyst (Part Time) | Techstars Iowa | Aug 2020 – Jan 2022 | Des Moines, IA |
+
+<Note>
+The first 2 entries are shown by default. The remaining 4 are revealed when the user clicks the **Show All Experiences** button.
+</Note>
+
+## Role details
+
+<AccordionGroup>
+  <Accordion title="Founder at a stealth startup" defaultOpen={false}>
+    **Period:** May – August 2026, Seattle, WA
+
+    Details are intentionally omitted. This entry has no `text` or `image` field — only `title` and `timeLine` are set.
+  </Accordion>
+
+  <Accordion title="SWE at OpenAI" defaultOpen={false}>
+    **Period:** May – August 2025, Seattle, WA
+
+    Worked on large language model development at OpenAI.
+  </Accordion>
+
+  <Accordion title="GoDaddy — Software Engineer Intern" defaultOpen={false}>
+    **Period:** May – August 2023, Seattle, WA
+
+    A/B tested features on GoDaddy's Checkout Page to improve conversion and user experience.
+  </Accordion>
+
+  <Accordion title="J.P. Morgan Chase — Software Engineer Intern" defaultOpen={false}>
+    **Period:** June – August 2022, Chicago, IL
+
+    Helped investment bankers maintain regulatory compliance by modernizing two internal websites to React.
+  </Accordion>
+
+  <Accordion title="Speechify — Recruiting Intern" defaultOpen={false}>
+    **Period:** January – April 2022, Remote
+
+    Speechify is a unicorn startup that uses AI to read content aloud. Patrick helped scale their team by sourcing top engineering and product candidates.
+  </Accordion>
+
+  <Accordion title="Techstars Iowa — Venture Analyst (Part Time)" defaultOpen={false}>
+    **Period:** August 2020 – January 2022, Des Moines, IA
+
+    Techstars Iowa selected ten startups nationwide for its three-month growth accelerator program. Patrick worked across two cohorts at the Des Moines location, building a financial model for each participating company.
+  </Accordion>
+</AccordionGroup>
+
+## Image hosting
+
+Company logos are hosted on **Cloudinary**. The `image` field holds the full Cloudinary URL. It is optional — if omitted, the UI renders the entry without a logo.
+
+## Adding a new experience
+
+<Steps>
+  <Step title="Open the work file">
+    Edit `src/constants/work.js`.
+  </Step>
+
+  <Step title="Upload a company logo to Cloudinary (optional)">
+    If you want a logo, upload it to Cloudinary and copy the full URL. You can skip this step and omit the `image` field entirely.
+  </Step>
+
+  <Step title="Add an object at the top of the workExperience array">
+    The array is most-recent first, so new roles go at index 0.
+
+    ```js
+    const workExperience = [
+      {
+        title: 'Senior Software Engineer at Acme Corp',
+        text: `Brief description of what you worked on and what impact it had.`,
+        image: 'https://res.cloudinary.com/dlk3ezbal/image/upload/v.../acme-logo.png',
+        timeLine: 'September 2026 - Present. San Francisco, CA',
+      },
+      // ... existing entries below ...
+    ];
+    ```
+
+    For a confidential or undisclosed role, omit `text` and `image`:
+
+    ```js
+    {
+      title: 'Founder at a stealth startup',
+      timeLine: 'January - June 2027. Remote',
+    },
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+The first two entries in the array are always visible. If you want a new role to appear without requiring the user to expand the list, insert it at index 0 or 1.
+</Tip>

@@ -1,0 +1,103 @@
+---
+title: "Introduction"
+description: "Overview of Patrick Foster's React portfolio website — architecture, tech stack, and site structure."
+---
+
+Patrick Foster's personal website at [patrickrfoster.com](https://www.patrickrfoster.com) is a single-page application built with React. It serves as a portfolio and blog, presenting Patrick's work experience, software projects, and written articles in a clean, client-side-rendered interface.
+
+## Tech stack
+
+| Technology | Version | Role |
+|---|---|---|
+| React | 18.2.0 | UI rendering and component model |
+| React Router DOM | 4.3.1 | Client-side routing |
+| Create React App (react-scripts) | 5.0.1 | Build tooling, dev server, test runner |
+| Netlify | — | Hosting, continuous deployment, redirect rules |
+
+<Info>
+  React Router DOM 4.x uses the `<Route>` and `<Switch>` API from the v4/v5 generation, not the newer v6 `<Routes>` component API. Keep this in mind if you reference React Router documentation.
+</Info>
+
+## Architecture overview
+
+The site is a classic React SPA with no server-side rendering. All routing is handled in the browser by React Router. Netlify serves the `index.html` file for every URL path via a catch-all redirect rule in `public/_redirects`, which allows React Router to take over on first load regardless of which URL the visitor lands on.
+
+Application data — blog articles, work experience entries, and project listings — is defined as plain JavaScript constants in `src/constants/`. Components import from these files directly; there is no API, database, or CMS involved. Adding or updating content means editing a constants file and redeploying.
+
+```
+User request → Netlify CDN → index.html → React boots → React Router reads URL → renders component
+```
+
+## Site routes
+
+<Columns cols={2}>
+  <Card title="Home" icon="house">
+    The root path `/` renders the `Home` component. This is the main landing page, presenting Patrick's introduction, work history, and featured projects.
+  </Card>
+  <Card title="Blog" icon="newspaper">
+    `/blog` renders the `Blog` component, which lists all articles sourced from `src/constants/articles.js`.
+  </Card>
+  <Card title="Blog post" icon="file-text">
+    `/blog/:id` renders the `ViewBlog` component for an individual article, where `:id` maps to a specific entry in the articles constants.
+  </Card>
+  <Card title="Magic: The Gathering" icon="sparkles">
+    `/magic-the-gathering` renders the `Haus` component, a dedicated section for MTG-related content.
+  </Card>
+</Columns>
+
+## Project structure
+
+<Tree>
+  <Tree.Folder name="src" defaultOpen>
+    <Tree.File name="App.js" />
+    <Tree.File name="Home.js" />
+    <Tree.File name="Home.css" />
+    <Tree.File name="index.js" />
+    <Tree.Folder name="components" defaultOpen>
+      <Tree.File name="Blog.js" />
+      <Tree.File name="blog.css" />
+      <Tree.File name="Card.js" />
+      <Tree.File name="Haus.js" />
+      <Tree.File name="ViewBlog.js" />
+      <Tree.File name="Work.js" />
+    </Tree.Folder>
+    <Tree.Folder name="constants" defaultOpen>
+      <Tree.File name="articles.js" />
+      <Tree.File name="projects.js" />
+      <Tree.File name="work.js" />
+      <Tree.Folder name="articles">
+        <Tree.File name="netflix.js" />
+      </Tree.Folder>
+    </Tree.Folder>
+    <Tree.Folder name="images" />
+  </Tree.Folder>
+  <Tree.Folder name="public">
+    <Tree.File name="_redirects" />
+    <Tree.File name="index.html" />
+    <Tree.File name="favicon.ico" />
+    <Tree.File name="manifest.json" />
+    <Tree.File name="robots.txt" />
+  </Tree.Folder>
+</Tree>
+
+### Key directories and files
+
+**`src/components/`** — One component file per page section or route. `Blog.js` and `ViewBlog.js` handle the blog listing and individual post views. `Work.js` renders the work experience timeline. `Card.js` is a shared UI primitive used across sections.
+
+**`src/constants/`** — All site content lives here as exported JavaScript arrays and objects. `articles.js` indexes blog posts, `projects.js` lists software projects, and `work.js` defines work experience entries. Individual article bodies are stored in `constants/articles/` (e.g., `netflix.js`).
+
+**`public/_redirects`** — A Netlify-specific file containing a single rule (`/* /index.html 200`) that routes every request to `index.html`, enabling client-side routing to work correctly on direct URL access and page refresh.
+
+## Netlify deployment
+
+The site deploys automatically from the connected Git repository. Netlify runs `CI=false npm run build` as the build command. The `CI=false` flag prevents React Scripts from treating ESLint warnings as build errors — without it, warnings that are acceptable in development would cause the Netlify build to fail.
+
+<Note>
+  The production build output lands in the `build/` directory. Netlify serves this directory as the static site root.
+</Note>
+
+## Next steps
+
+<Card title="Getting started" icon="terminal" href="/getting-started">
+  Run the site locally, understand the project structure, and learn how to add new projects or work experience entries.
+</Card>

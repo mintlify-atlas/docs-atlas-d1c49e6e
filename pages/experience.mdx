@@ -1,0 +1,149 @@
+---
+title: "Work experience"
+description: "Patrick Foster's work history displayed in the portfolio's Experiences section."
+---
+
+Work experience entries are defined in `src/constants/work.js` and exported as the `workExperience` array. The home page renders them inside `<Work>` components, showing 2 by default with a toggle to reveal all 6.
+
+## Experience data shape
+
+Each entry is a plain object:
+
+```js
+{
+    title: string,     // Job title and company, typically formatted as "Role at Company:"
+    text: string,      // Short description of responsibilities (optional on some entries)
+    image: string,     // Cloudinary URL for company logo or related image
+    timeLine: string   // Date range and location, e.g. "May - August 2023. Seattle, WA"
+}
+```
+
+<Note>
+  Images are hosted on Cloudinary under the `dlk3ezbal` cloud. The `image` field is a full Cloudinary URL.
+</Note>
+
+## Timeline
+
+| Role | Company | Dates | Location | Highlights |
+|------|---------|-------|----------|------------|
+| Founder | Stealth startup | May – Aug 2026 | Seattle, WA | — |
+| Software Engineer | OpenAI | May – Aug 2025 | Seattle, WA | Built large language models |
+| Software Engineer Intern | GoDaddy | May – Aug 2023 | Seattle, WA | A/B tested features on checkout page |
+| Software Engineer Intern | J.P. Morgan Chase | June – Aug 2022 | Chicago, IL | Modernized two websites to React for investment banking compliance |
+| Recruiting Intern | Speechify | Jan – Apr 2022 | Remote | Sourced top candidates to scale the team at a unicorn AI startup |
+| Venture Analyst (Part Time) | Techstars Iowa | Aug 2020 – Jan 2022 | Des Moines, IA | Built financial models for two cohorts of nationally selected startups |
+
+## Role details
+
+<AccordionGroup>
+  <Accordion title="Founder at a stealth startup" icon="rocket" defaultOpen={false}>
+    **Timeline:** May – August 2026. Seattle, WA
+
+    Details are not yet public. This entry is displayed as the most recent experience at the top of the list.
+
+    ```js
+    { title: 'Founder at a stealth startup', timeLine: 'May - August 2026. Seattle, WA' }
+    ```
+  </Accordion>
+
+  <Accordion title="SWE at OpenAI">
+    **Timeline:** May – August 2025. Seattle, WA
+
+    Worked on building large language models at OpenAI.
+
+    ```js
+    {
+        title: 'SWE at OpenAI',
+        text: 'Built big LLMs',
+        timeLine: 'May - August 2025. Seattle, WA'
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="GoDaddy Software Engineer Intern">
+    **Timeline:** May – August 2023. Seattle, WA
+
+    A/B tested new features on GoDaddy's Checkout Page to improve conversion rates and user experience.
+
+    ```js
+    {
+        title: 'GoDaddy Software Engineer Intern:',
+        text: "A/B Tested features on GoDaddy's Checkout Page.",
+        image: '...',
+        timeLine: 'May - August 2023. Seattle, WA'
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="J.P. Morgan Chase Software Engineer Intern">
+    **Timeline:** June – August 2022. Chicago, IL
+
+    Helped investment bankers maintain regulatory compliance by modernizing two internal websites, migrating them from legacy frameworks to React.
+
+    ```js
+    {
+        title: 'J.P. Morgan Chase Software Engineer Intern:',
+        text: 'Helped investment bankers maintain regulatory compliance by modernizing two websites to React.',
+        image: '...',
+        timeLine: 'June - August 2022. Chicago, IL'
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Speechify Recruiting Intern">
+    **Timeline:** January – April 2022. Remote
+
+    Speechify is a unicorn startup that uses AI to read text aloud. Patrick helped scale their team by sourcing high-quality engineering and product candidates.
+
+    ```js
+    {
+        title: 'Speechify Recruiting Intern:',
+        text: 'Speechify is a Unicorn startup that uses AI to read to you. I helped them scale their world-class team by sourcing top candidates.',
+        image: '...',
+        timeLine: 'January - April 2022. Remote'
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="Techstars Venture Analyst (Part Time)">
+    **Timeline:** August 2020 – January 2022. Des Moines, IA
+
+    Techstars Iowa selected ten startups nationwide for its three-month accelerator program. Patrick worked across two cohorts at the Des Moines location, building financial models for each participating company.
+
+    ```js
+    {
+        title: 'Techstars Venture Analyst (Part Time):',
+        text: 'Techstars Iowa handpicked ten amazing startups nationwide to participate in its three-month growth program. I worked with two of these cohorts through the Des Moines Location, making each company a financial model.',
+        image: '...',
+        timeLine: 'August 2020 - January 2022. Des Moines, IA'
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Adding a new experience
+
+<Steps>
+  <Step title="Open the work constant file">
+    Edit `src/constants/work.js`.
+  </Step>
+  <Step title="Add a new entry to the array">
+    Prepend a new object to the `workExperience` array so it appears first (most recent at top).
+
+    ```js
+    {
+        title: 'Role at Company:',
+        text: 'Brief description of what you did.',
+        image: 'https://res.cloudinary.com/dlk3ezbal/image/upload/v.../logo.png',
+        timeLine: 'Month - Month Year. City, State'
+    }
+    ```
+  </Step>
+  <Step title="Upload a logo to Cloudinary">
+    Upload the company logo or a relevant image to Cloudinary under the `dlk3ezbal` cloud and use the generated URL as the `image` value.
+  </Step>
+</Steps>
+
+<Tip>
+  The home page shows the first 2 entries in the array by default. Keep the array sorted most-recent-first so the two visible entries are always the most current roles.
+</Tip>

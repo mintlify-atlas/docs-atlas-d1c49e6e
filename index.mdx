@@ -1,97 +1,66 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Patrick Foster's Personal Website"
+description: "Documentation for patrickrfoster.com — a React-based portfolio showcasing work experience, projects, and blog articles."
 ---
 
-## Setting up
+## Overview
 
-Get your documentation site up and running in minutes.
+This documentation covers the source code, architecture, and content of [patrickrfoster.com](https://www.patrickrfoster.com) — Patrick Foster's personal portfolio website built with React.
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+The site is a single-page application (SPA) with client-side routing, deployed on Netlify. It presents Patrick's professional background, software projects, and writing in a clean, interactive format.
 
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Introduction" icon="user" href="/introduction">
+    Learn about the site's purpose, tech stack, and architecture.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Getting Started" icon="rocket" href="/getting-started">
+    Run the project locally and understand the project structure.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Site Pages" icon="browser" href="/pages/home">
+    Explore each page — Home, Projects, Blog, and more.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Components" icon="puzzle-piece" href="/components/card">
+    Reference for the reusable React components used throughout the site.
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## Key features
 
-Everything you need to create world-class documentation.
+<CardGroup cols={2}>
+  <Card title="Animated hero section" icon="sparkles">
+    Glitch-style animated heading text greeting visitors on the home page.
+  </Card>
+  <Card title="Work experience timeline" icon="briefcase">
+    Expandable list of work history with company logos and date ranges.
+  </Card>
+  <Card title="Project showcase" icon="code">
+    Cards displaying projects with images, videos, and external links.
+  </Card>
+  <Card title="Blog with routing" icon="newspaper">
+    Individual article pages rendered via dynamic React Router routes.
+  </Card>
+  <Card title="Magic: The Gathering page" icon="wand-magic-sparkles">
+    A dedicated page for Magic: The Gathering content.
+  </Card>
+  <Card title="One-click contact" icon="envelope">
+    Email copy-to-clipboard and LinkedIn integration in the footer.
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+## Tech stack
 
-## Need inspiration?
+| Technology | Version | Role |
+|---|---|---|
+| React | 18.2.0 | UI framework |
+| React Router DOM | 4.3.1 | Client-side routing |
+| React Scripts | 5.0.1 | Build toolchain (CRA) |
+| Netlify | — | Hosting and deployment |
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+## Site routes
+
+| Route | Component | Description |
+|---|---|---|
+| `/` | `Home` | Hero, work experience, and projects |
+| `/blog` | `Blog` | Blog post listing |
+| `/blog/:id` | `ViewBlog` | Individual article view |
+| `/magic-the-gathering` | `Haus` | Magic: The Gathering page |
